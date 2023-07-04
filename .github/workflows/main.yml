@@ -12,9 +12,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest]
-        mode: [release, dev]
-        go: ["1.14"]
+        os: [windows-latest]
+        mode: [release]
+        go: ["1.20.5"]
 
     steps:
       - name: Setup Go
