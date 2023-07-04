@@ -26,6 +26,7 @@ type CanonicalConfig struct {
 	InvertSliders bool
 
 	NoiseReductionLevel string
+	MaxSliderValue int
 
 	logger             *zap.SugaredLogger
 	notifier           Notifier
@@ -53,9 +54,11 @@ const (
 	configKeyCOMPort             = "com_port"
 	configKeyBaudRate            = "baud_rate"
 	configKeyNoiseReductionLevel = "noise_reduction"
+	configKeyMaxSliderValue			 = "max_slider_value"
 
 	defaultCOMPort  = "COM4"
 	defaultBaudRate = 9600
+	defaultMaxSliderValue = 1023
 )
 
 // has to be defined as a non-constant because we're using path.Join
@@ -89,6 +92,7 @@ func NewConfig(logger *zap.SugaredLogger, notifier Notifier) (*CanonicalConfig, 
 	userConfig.SetDefault(configKeyInvertSliders, false)
 	userConfig.SetDefault(configKeyCOMPort, defaultCOMPort)
 	userConfig.SetDefault(configKeyBaudRate, defaultBaudRate)
+	userConfig.SetDefault(configKeyMaxSliderValue, defaultMaxSliderValue)
 
 	internalConfig := viper.New()
 	internalConfig.SetConfigName(internalConfigName)
@@ -238,6 +242,7 @@ func (cc *CanonicalConfig) populateFromVipers() error {
 
 	cc.InvertSliders = cc.userConfig.GetBool(configKeyInvertSliders)
 	cc.NoiseReductionLevel = cc.userConfig.GetString(configKeyNoiseReductionLevel)
+	cc.MaxSliderValue = cc.userConfig.GetInt(configKeyMaxSliderValue)
 
 	cc.logger.Debug("Populated config fields from vipers")
 
